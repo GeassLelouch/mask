@@ -1,0 +1,345 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>mask</groupId>
+	<artifactId>mask</artifactId>
+	<packaging>war</packaging>
+	<!-- SNAPSHOT : 尚不穩定的版本 -->
+	<version>0.0.1-SNAPSHOT</version>
+	<name>mask Maven Webapp</name>
+	<url>http://maven.apache.org</url>
+	<description>My system</description>
+	<properties>
+		<jdk.version>1.8</jdk.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		
+		<!-- 指定各個jar檔版本 -->
+		
+		<!-- Spring -->
+		<springframework.version>4.0.7.RELEASE</springframework.version>
+		<spring-data-jpa.version>1.7.2.RELEASE</spring-data-jpa.version>
+		<!-- Hibernate / JPA -->
+		<hibernate.version>4.1.9.Final</hibernate.version>
+		<hibernate-jpa-2.1-api>1.0.0.Final</hibernate-jpa-2.1-api>
+		<hibernate-validator.version>5.1.0.Final</hibernate-validator.version>
+		<!-- Bean validation -->
+		<validation-api.version>1.1.0.Final</validation-api.version>
+		<!-- Test -->
+		<junit.version>4.11</junit.version>
+		<!-- Logging -->
+		<org.slf4j-version>1.7.7</org.slf4j-version>
+		<!-- Other -->
+		<lombok.version>1.16.6</lombok.version>
+		<javax.servlet.jstl.version>1.2</javax.servlet.jstl.version>
+	</properties>
+	<dependencies>
+		<!-- 
+		只對編譯跟測試classpath有效 
+		<scope>provided</scope> 
+		 只在運行時有效
+		<scope>runtime</scope> 
+		
+		<exclusions>
+		<exclusion>
+		解決版本衝突
+		a依賴b,b依賴c
+		可排除相應的重複依賴
+		
+		-->
+
+		
+		<!-- 資料庫  -->
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>5.1.6</version>
+		</dependency>
+		<!-- spring series  -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-core</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-jpa</artifactId>
+			<version>${spring-data-jpa.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-jdbc</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-aop</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		
+		<!-- jUnit 單元測試 匯入SpringApplicationConfiguration會用到 -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-context</artifactId>
+		    <version>${springframework.version}</version>
+		</dependency>		
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-oxm</artifactId>
+			<version>${springframework.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>commons-lang</groupId>
+					<artifactId>commons-lang</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-web</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${springframework.version}</version>
+		</dependency>
+		
+		
+		<!-- org.apache.commons.lang 3.0 ver -->
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-lang3</artifactId>
+		    <version>3.0</version>
+		</dependency>
+		
+		<!-- 自動產生get/set -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<!-- 只對編譯跟測試classpath有效 -->
+			<scope>provided</scope>
+		</dependency>	
+		
+		<!-- servlet/jsp -->	
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<version>2.5</version>
+			<!-- 只對編譯跟測試classpath有效 -->
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet.jsp</groupId>
+			<artifactId>jsp-api</artifactId>
+			<version>2.2</version>
+			<scope>provided</scope>
+		</dependency>
+		
+		<!-- JSTL dependency -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>jstl</artifactId>
+			<version>${javax.servlet.jstl.version}</version>
+		</dependency>
+		<!-- jsp的 EL表達式 所使用 -->
+		<dependency>
+   			<groupId>javax.el</groupId>
+   			<artifactId>javax.el-api</artifactId>
+   			<version>2.2.4</version>
+		</dependency>
+		
+		<!-- JPA / HIBERNATE -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-core</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<version>${hibernate-jpa-2.1-api}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-entitymanager</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-validator</artifactId>
+			<version>${hibernate-validator.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-ehcache</artifactId>
+			<version>${hibernate.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-c3p0</artifactId>
+			<version>5.0.11.Final</version>
+			<exclusions>
+				<exclusion>
+					<artifactId>c3p0</artifactId>
+					<groupId>c3p0</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		
+		<!-- Bean Validation 可以在bean的屬性上加上annotation，可以簡單對每個欄位做檢核 -->		
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>${validation-api.version}</version>
+		</dependency>	
+
+		<!-- 檔案 I/O所用，可以看成是java.io的擴展，使用IOUtils -->		
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.4</version>
+		</dependency>	
+			
+		<!-- 單元測試所使用，可直接指定測試某個方法 -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>${junit.version}</version>
+			<!-- 只用於測試 -->
+			<scope>test</scope>
+		</dependency>
+		
+		<!-- log類別 -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>
+		<!-- jcl-over-slf4j： commons-logging切换到slf4j -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>jcl-over-slf4j</artifactId>
+			<version>${org.slf4j-version}</version>
+			<!-- 只在運行時有效 -->
+			<scope>runtime</scope>
+		</dependency>
+		<!-- 场景介绍：如 使用slf4j的API进行编程，底层想使用log4j1来进行实际的日志输出，这就是slf4j-log4j12干的事。 -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${org.slf4j-version}</version>
+		</dependency>	
+		
+		<!-- 單元測試會使用 -->
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-test</artifactId>
+		    <version>4.0.5.RELEASE</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		
+		
+		<!-- 先試試看有 lang3了是不是不再需要舊版本
+		<dependency>
+		<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+			<version>2.6</version>
+		</dependency>
+		-->
+		
+		<!-- Struts2  是為了讓action能夠繼承Actionsupport
+		<dependency>
+		    <groupId>com.opensymphony</groupId>
+		    <artifactId>xwork</artifactId>
+		    <version>2.1.2</version>
+		</dependency>
+		-->
+		
+		
+		
+			<!-- spring-boot series 
+		
+		 spring boot 其中一個項目，好像是測試時用的，暫時先註解掉 	
+		-->		
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot</artifactId>
+		    <version>1.5.1.RELEASE</version>
+		</dependency>
+		
+
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-test</artifactId>
+		    <version>1.5.2.RELEASE</version>
+		    <scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>net.sf.jasperreports</groupId>
+			<artifactId>jasperreports</artifactId>
+			<version>6.2.0</version>
+		</dependency>	
+		<!-- 因為jasperreport 會無法顯示中文，需要自己加入標楷體字型-->
+		<dependency>
+			<groupId>com.font</groupId>
+			<artifactId>kaiu</artifactId>
+			<version>1.0.0</version>
+		</dependency>    
+		
+		<!-- spring-boot series 
+		JasperServer  為商業用戶的互動，特定和預設查詢與報告服務器
+		
+		JasperReports 開發人員所用的Java報表函數庫
+		
+		<dependency>
+			<groupId>com.jaspersoft.jasperserver</groupId>
+			<artifactId>jasperserver-common-ws</artifactId>
+			<version>6.2.0</version>
+		</dependency>
+	
+		<dependency>
+			<groupId>com.jaspersoft.jasperserver</groupId>
+			<artifactId>jasperserver-ireport-plugin</artifactId>
+			<version>2.0.1</version>
+		</dependency>	
+		-->	        
+		
+	</dependencies>
+	<reporting>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>
+	     			maven-project-info-reports-plugin
+		    	</artifactId>
+			</plugin>
+		</plugins>
+	</reporting>
+	<build>
+		<finalName>mask</finalName>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.0</version>
+				<configuration>
+					<source>${jdk.version}</source>
+					<target>${jdk.version}</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

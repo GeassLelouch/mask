@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:jpa="http://www.springframework.org/schema/data/jpa"
+  xmlns:tx="http://www.springframework.org/schema/tx"
+  xsi:schemaLocation="http://www.springframework.org/schema/beans
+    http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
+    http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
+    http://www.springframework.org/schema/data/jpa http://www.springframework.org/schema/data/jpa/spring-jpa-1.3.xsd
+	">
+	
+	<!-- JDBC Configuration -->
+	<bean id="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource" destroy-method="close">
+		<property name="driverClass" value="${jdbc.driverClassName}"/>
+		<property name="jdbcUrl" value="${jdbc.databaseurl}"/>
+        <property name="user" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+		<!-- 初始化時獲取的連接數,取值應在了MinPoolSize與maxPoolSize之間 -->
+		<property name="initialPoolSize" value="${hibernate.c3p0.initialSize}"/>
+		<!-- 指達到max_size的用量後一次可以再追加多少的連線數 -->
+		<property name="acquireIncrement" value="${hibernate.c3p0.acquireIncrement}" />
+		<!-- 最小連接數 -->
+		<property name="minPoolSize" value="${hibernate.c3p0.minSize}" />
+		<!-- 最大連接數 -->
+		<property name="maxPoolSize" value="${hibernate.c3p0.maxSize}" />
+		<!-- 最大閒置時間,?秒內未使用則連接被丟棄,若為0則永不丟棄 -->
+		<property name="maxIdleTime" value="${hibernate.c3p0.maxIdleTime}" />
+		<!-- 每隔?秒檢查連接池裡的空閒連接,單位是秒 -->
+		<property name="idleConnectionTestPeriod" value="${hibernate.c3p0.idleTestPeriod}" />
+	</bean>
+	<!-- JPA Spring Configuration -->
+	<bean id="entityManagerFactory" class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean">
+		<property name="packagesToScan">
+			<list>
+				<value>com.shell.model</value>
+			</list>
+		</property>
+		<!-- 用來指定 provider=org.hibernate.jpa.HibernatePersistenceProvider -->
+		<property name="jpaVendorAdapter">
+			<bean class="org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter" />
+		</property>
+		<property name="dataSource" ref="dataSource" />
+		<property name="jpaProperties">
+         <props>
+            <prop key="hibernate.dialect">${jdbc.dialect}</prop>
+			<prop key="hibernate.show_sql">${hibernate.showSql}</prop>
+			<prop key="hibernate.format_sql">${hibernate.formatSql}</prop>
+			<prop key="hibernate.use_sql_comments">${hibernate.useSqlComments}</prop>
+			<prop key="hibernate.hbm2ddl.auto">${hibernate.hbm2ddl.auto}</prop>
+			<prop key="org.hibernate.envers.store_data_at_delete">${org.hibernate.envers.storeDataAtDelete}</prop>
+			<prop key="hibernate.cache.use_query_cache">${hibernate.cache.useQueryCache}</prop>
+			<prop key="hibernate.cache.use_second_level_cache">${hibernate.cache.useSecondLevelCache}</prop>
+			<prop key="hibernate.generate_statistics">${hibernate.generateStatistics}</prop>
+			<prop key="hibernate.temp.use_jdbc_metadata_defaults">false</prop>
+			<prop key="hibernate.connection.charSet">UTF-8</prop>
+			<prop key="hibernate.connection.characterEncoding">UTF-8</prop>            
+         </props>
+		</property>
+	</bean>
+	<bean id="jpaDialect" class="org.springframework.orm.jpa.vendor.HibernateJpaDialect" />
+	<!-- 轉換為Spring的exception message -->
+	<bean id="persistenceExceptionTranslationPostProcessor"
+		class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />
+	<bean id="transactionManager" class="org.springframework.orm.jpa.JpaTransactionManager">
+		<property name="entityManagerFactory" ref="entityManagerFactory" />
+		<property name="jpaDialect" ref="jpaDialect" />
+	</bean>
+	<tx:annotation-driven transaction-manager="transactionManager" />
+		<jpa:repositories base-package="com.shell.repository"
+		factory-class="com.shell.repository.DefaultRepositoryFactoryBean"
+		transaction-manager-ref="transactionManager"
+		entity-manager-factory-ref="entityManagerFactory" />
+
+</beans>
