@@ -15,7 +15,20 @@
 <script src="${pageContext.request.contextPath}/js/car/jquery.poptrox.min.js"></script>
 <script src="${pageContext.request.contextPath}/js/car/jquery.scrolly.min.js"></script>
 <script>
+
 	$(document).ready(function() {
+		$('#test22').click(function(){
+			$.ajax({
+				type: "POST",
+				url: "./show2",
+				data: {},
+			   	success: function(data) {
+			   		alert(data);
+						$("#bodyContent").html(data);
+					}
+			});
+		});
+		
 		$("#checkout").click(function() {
 			  $("#productCheckout").submit();
 		});	
@@ -26,6 +39,7 @@
 <div id="main">
 	<div class="inner">
 	<!-- Boxes -->
+	<input id="test22" type="button" >
 		<div class="thumbnails">
 			<c:forEach var="product" items="${productList}" >
 				<div class="box">

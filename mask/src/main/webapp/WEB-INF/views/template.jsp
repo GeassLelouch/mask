@@ -29,10 +29,12 @@
 		<%@ include file="/WEB-INF/views/common/header.jsp"%>
 		
 		<!-- body-->
-		<jsp:include page="${partial}" />
-		<!-- body end-->
+		<div id="bodyContent">
+ 			<jsp:include page="${partial}" />
+		</div>
 		
 		<!-- Footer 共用頁尾-->
 		<%@ include file="/WEB-INF/views/common/footer.jsp"%>
+		xxxxxxxxxxxxxxxx
 	</body>
 </html>

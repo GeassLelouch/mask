@@ -39,6 +39,7 @@ public class ProductController {
 	private static String SEARCH = "product/search.jsp";
 //	private static String SHOW = "product/show";
 	private static String SHOW = "product/show.jsp";
+	private static String SHOW2 = "product/show2.jsp";
 	
 	@RequestMapping(value = "/search",method = RequestMethod.GET)
 	public ModelAndView search(HttpServletRequest req, HttpServletResponse res) {
@@ -80,6 +81,17 @@ public class ProductController {
 //		model.addObject("productList", productList);
 //
 //		return model;
+	}
+	
+	@RequestMapping(value = "/show2",method = RequestMethod.POST)
+	public ModelAndView show2(HttpServletRequest req, HttpServletResponse res) {
+		
+		Product product = maskService.findByPK("2013011901");
+		ModelAndView model = new ModelAndView(SHOW2);
+		model.addObject("product", product);
+		model.addObject("member", member);
+		return model;	
+		
 	}
 	
 	public String getId() {
